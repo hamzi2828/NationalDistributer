@@ -1,0 +1,42 @@
+
+@page {
+    size   : auto;
+    margin : 15px;
+}
+@page {
+    margin-top: 70px; /* For subsequent pages */
+}
+
+body {
+    position   : relative;
+    margin     : 0 auto;
+    color      : #001028;
+    background : #FFFFFF;
+    font-size  : 10px;
+}
+
+table {
+    width           : 100%;
+    border-collapse : collapse;
+    border-spacing  : 0;
+    margin-bottom   : 10px;
+}
+
+table th {
+    padding       : 8px 10px;
+    color         : #5D6975;
+    background    : #F5F5F5;
+    border-bottom : 1px solid #C1CED9;
+    white-space   : nowrap;
+    font-weight   : normal;
+    font-size     : 1.1em;
+}
+
+table td {
+    padding : 8px 10px; 
+}
+
+#header td {
+    background : #FFFFFF;
+    padding    : 0;
+}
