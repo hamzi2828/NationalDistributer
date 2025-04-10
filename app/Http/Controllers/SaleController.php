@@ -77,7 +77,7 @@
 
                 DB ::beginTransaction ();
                 $sale = $this -> saleService -> sale ( $request );
-                $this -> saleService -> sale_products ( $request, $sale );
+                $this -> saleService -> sale_products_v2 ( $request, $sale );
 
                 DB ::commit ();
                 return redirect () -> back () -> with ( 'message', 'Sale has been created.' );

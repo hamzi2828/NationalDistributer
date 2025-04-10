@@ -978,6 +978,66 @@ function sale_quantity ( product_id ) {
     }
 }
 
+
+
+function update_sale_price ( product_id ) {
+    let available_qty = $ ( '.available-qty-' + product_id ).val ();
+    let sale_qty      = $ ( '.sale-qty-' + product_id ).val ();
+    let customer_id   = $ ( '#sale-customer' ).val ();
+    let updated_price = $ ( '.product-price-' + product_id + ' input' ).val ();
+    console.log(updated_price);
+
+    if ( typeof customer_id === 'undefined' )
+        customer_id = $ ( '#sale-customer-attribute' ).val ();
+
+    if ( parseInt ( customer_id ) < 1 || customer_id === null || typeof customer_id === 'undefined' ) {
+        alert ( 'Customer has not been chosen' );
+        return;
+    }
+
+    if ( parseInt ( sale_qty ) > parseInt ( available_qty ) ) {
+        $ ( 'form button' ).prop ( 'disabled', true );
+        $ ( '.sale-qty-' + product_id ).css ( 'border', '1px solid #FF0000' );
+    }
+    else {
+
+        ajaxSetup ();
+        jQuery.ajax ( {
+                          type      : 'GET',
+                          url       : '/get-price-by-sale-quantity',
+                          data      : {
+                              product_id,
+                              sale_qty,
+                              customer_id,
+                          },
+                          beforeSend: function () {
+                              $ ( 'button[type=submit]' ).prop ( 'disabled', true );
+                          },
+                          success   : function ( response ) {
+                              let obj = JSON.parse ( response );
+                                // Get net price and tax rate
+                                let netPrice = updated_price ? parseFloat(updated_price) : parseFloat(obj.net_price);
+                                let taxRate = obj.tax ? parseFloat(obj.tax.rate) : 0; // Ensure tax exists
+
+                                // Calculate total price including tax
+                                let totalPrice = netPrice + (netPrice * (taxRate / 100));
+                                totalPrice = totalPrice * sale_qty;
+
+                              $ ( '.product-price-' + product_id + ' input' ).val ( netPrice.toFixed ( 2 ) );
+                              $ ( '.product-net-price-' + product_id + ' input' ).val ( totalPrice.toFixed ( 2 ) );
+                              $ ( 'form button' ).prop ( 'disabled', false );
+                              $ ( '.sale-qty-' + product_id ).css ( 'border', '1px solid #D8D6DE' );
+                              calculate_sale_net_price ();
+                              $ ( 'button[type=submit]' ).prop ( 'disabled', false );
+                          },
+                          error     : function ( xHR, exception ) {
+                              ajaxErrors ( xHR, exception );
+                              $ ( 'form button' ).prop ( 'disabled', false );
+                              $ ( '.sale-qty-' + product_id ).css ( 'border', '1px solid #D8D6DE' );
+                          }
+                      } )
+    }
+}
 /**
  * -------------
  * calculate total
@@ -1126,6 +1186,9 @@ function sale_discount(product_id) {
         }
     });
 }
+
+
+
 
 /**
  * -------------

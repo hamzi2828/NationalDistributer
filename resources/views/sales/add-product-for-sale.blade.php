@@ -22,8 +22,14 @@
                    placeholder="Quantity" min="0">
         </td>
 
-        <td class="product-price-{{ $product -> id }}">
+        {{-- <td class="product-price-{{ $product -> id }}">
             <input class="form-control" readonly="readonly">
+        </td> --}}
+
+        <td class="product-price-{{ $product -> id }}">
+            <input type="number" class="form-control product-price-{{ $product -> id }}"  name="price[]"
+                   data-product-id="{{ $product -> id }}" onchange="update_sale_price({{ $product -> id }})"
+                   placeholder="Price" value="0" min="0" step="0.01">
         </td>
 
         <td>

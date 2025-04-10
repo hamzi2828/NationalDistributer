@@ -152,37 +152,35 @@
 
 
          public function get_sale_total_v2($request): float|int
-        {
-            $products = $request->input('products');
-            $netPrice = 0;
+         {
+             $products = $request->input('products');
+             $netPrice = 0;
 
-            if (count($products) > 0) {
-                foreach ($products as $key => $product_id) {
-                    $sale_qty = (int) $request->input("quantity.$key", 0);
-                    $flat_discount = floatval($request->input("discount.$key", 0));
+             if (count($products) > 0) {
+                 foreach ($products as $key => $product_id) {
+                     $sale_qty = (int) $request->input("quantity.$key", 0);
+                     $flat_discount = floatval($request->input("discount.$key", 0));
+                     $unit_price = floatval($request->input("price.$key", 0)); // Use submitted price
 
-                    if ($sale_qty <= 0) continue;
+                     if ($sale_qty <= 0) continue;
 
-                    // Use your helper to get price details
-                    $pricing = $this->get_price_by_sale_quantity($product_id, $sale_qty);
+                     $product_net_price = $unit_price * $sale_qty;
 
-                    $product_net_price = $pricing['net_price'] ?? 0;
-                    $product_unit_price = $pricing['price'] ?? 0;
-                    $taxRate = $pricing['tax']['rate'] ?? 0;
+                     // Apply flat discount once per product line
+                     $discounted_price = max(0, $product_net_price - $flat_discount);
 
-                    // Apply flat discount once per product line
-                    $discounted_price = max(0, $product_net_price - $flat_discount);
+                     // If you still want to apply tax, you can use a fixed rate or dynamic logic here
+                     $taxRate = 0; // Set to actual tax rate if needed
 
-                    // Apply tax after discount
-                    $price_with_tax = $discounted_price + ($discounted_price * ($taxRate / 100));
+                     $price_with_tax = $discounted_price + ($discounted_price * ($taxRate / 100));
 
-                    // Accumulate to final total
-                    $netPrice += round($price_with_tax, 2);
-                }
-            }
+                     $netPrice += round($price_with_tax, 2);
+                 }
+             }
 
-            return round($netPrice, 2);
-        }
+             return round($netPrice, 2);
+         }
+
 
 
         public function get_sale_total ( $request ): float | int {
@@ -362,14 +360,12 @@
                 foreach ($products as $key => $product_id) {
                     $sale_qty = (int) $request->input("quantity.$key", 0);
                     $flat_discount = floatval($request->input("discount.$key", 0));
+                    $unit_price = floatval($request->input("price.$key", 0)); // Get submitted price
+                    $taxRate = floatval($request->input("tax.$key", 0)); // Optional: get tax from request
 
                     if ($sale_qty <= 0) continue;
 
-                    // Get pricing details using helper
-                    $pricing = $this->get_price_by_sale_quantity($product_id, $sale_qty);
-
-                    $product_net_price = $pricing['net_price'] ?? 0;
-                    $taxRate = $pricing['tax']['rate'] ?? 0;
+                    $product_net_price = $unit_price * $sale_qty;
 
                     // Apply flat discount once per product line
                     $discounted_price = max(0, $product_net_price - $flat_discount);
@@ -381,8 +377,9 @@
                 }
             }
 
-            return round($totalTax, 2); // Total tax only
-        }
+            return round($totalTax, 2);
+}
+
 
 
         /**
@@ -397,7 +394,6 @@
         public function sale ( $request ): mixed {
             $total = $this -> get_sale_total_v2 ( $request );
             $Tax_Total = $this -> get_sale_tax_total_v2 ( $request );
-
             $net   = 0;
             // dd($Tax_Total, $total);
 
@@ -629,6 +625,66 @@
             $products = count ( request ( 'products' ) );
             return ( $discount / $products );
         }
+
+
+        public function sale_products_v2($request, $sale): void
+        {
+            $sale_id = $sale->id;
+            $products = $request->input('products');
+
+            if (count($products) > 0) {
+                foreach ($products as $key => $product_id) {
+                    $product = Product::findOrFail($product_id);
+                    $taxRate = $product->tax ? $product->tax->rate : 0; // Default to 0 if not present
+                    $product->load(['stocks']);
+
+                    $sale_qty = (int) $request->input("quantity.$key");
+                    $product_discount = (float) $request->input("discount.$key", 0);
+                    $sale_unit = (float) $request->input("price.$key"); // ✅ Use submitted price
+                    $avgSalePrice = $sale_unit; // ✅ You can assume it's the same as sale_unit
+
+                    $isFirst = true;
+
+                    foreach ($product->stocks as $stock) {
+                        if ($sale_qty <= 0) break;
+
+                        $available_qty = $stock->available();
+                        if ($available_qty <= 0) continue;
+
+                        $usable_qty = min($available_qty, $sale_qty);
+
+                        // ✅ Apply discount only on first split
+                        $flatDiscount = $isFirst ? min($product_discount, $usable_qty * $sale_unit) : 0;
+                        $discountPerItem = $isFirst ? $product_discount : 0;
+
+                        // Price calculations
+                        $totalPrice = $usable_qty * $sale_unit;
+                        $discountedPrice = $totalPrice - $flatDiscount;
+                        $tax_value = $discountedPrice * ($taxRate / 100);
+                        $finalPrice = $discountedPrice + $tax_value;
+
+                        $info = [
+                            'sale_id'           => $sale_id,
+                            'product_id'        => $product_id,
+                            'stock_id'          => $stock->id,
+                            'quantity'          => $usable_qty,
+                            'price'             => $sale_unit,
+                            'avgSalePrice'      => $avgSalePrice,
+                            'discount'          => $flatDiscount,
+                            'discount_per_item' => $discountPerItem,
+                            'net_price'         => $finalPrice,
+                            'tax_value'         => $tax_value,
+                        ];
+
+                        SaleProducts::create($info);
+
+                        $sale_qty -= $usable_qty;
+                        $isFirst = false;
+                    }
+                }
+            }
+        }
+
 
         /**
          * --------------
