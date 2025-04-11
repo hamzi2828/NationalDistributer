@@ -479,7 +479,7 @@
          */
 
         public function edit_sale ( $request, $sale ): void {
-            $total = $this -> get_sale_total ( $request );
+            $total = $this -> get_sale_total_v2 ( $request );
             $net   = 0;
 
             if ( $request -> has ( 'percentage-discount' ) && $request -> input ( 'percentage-discount' ) > 0 ) {

@@ -32,11 +32,11 @@
                    placeholder="Price" value="0" min="0" step="0.01">
         </td>
 
-        <td>
+        {{-- <td>
             <input type="number" class="form-control discount-{{ $product -> id }}" name="discount[]"
                    data-product-id="{{ $product -> id }}" onchange="sale_discount({{ $product -> id }})"
                    placeholder="Discount" value="0" min="0" step="0.01">
-        </td>
+        </td> --}}
 
 
 

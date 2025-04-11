@@ -53,9 +53,13 @@
             </td>
 
             <td class="product-price-{{ $product -> id }}">
-                <input class="form-control"
-                       readonly="readonly"
-                       value="{{ number_format (($simple_sale -> price/$simple_sale -> noOfRows), 2) }}">
+                <input type="number" 
+                class="form-control product-price-{{ $product -> id }}" 
+                 name="price[]"
+                data-product-id="{{ $product -> id }}" 
+                onchange="update_sale_price({{ $product -> id }})"
+                placeholder="Price" value="{{ number_format (($simple_sale -> price/$simple_sale -> noOfRows), 2) }}">
+
             </td>
 
             <td class="product-net-price-{{ $product -> id }}">

@@ -104,14 +104,14 @@
                                                             <th width="8%">Available Qty.</th>
                                                             <th width="10%">Sale Qty.</th>
                                                             <th width="20%">Price</th>
-                                                            <th width="10%">Discount</th>
+                                                            {{-- <th width="10%">Discount</th> --}}
                                                             <th width="20%">Net Price</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody id="sold-products"></tbody>
                                                         <tfoot id="sale-footer" class="d-none">
                                                         <tr>
-                                                            <td colspan="6" align="right">
+                                                            <td colspan="5" align="right">
                                                                 <strong>Total</strong>
                                                             </td>
                                                             <td>
@@ -120,7 +120,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="6" align="right">
+                                                            <td colspan="5" align="right">
                                                                 <strong>Discount (Flat)</strong>
                                                             </td>
                                                             <td>
@@ -130,7 +130,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="6" align="right">
+                                                            <td colspan="5" align="right">
                                                                 <strong>Discount (%)</strong>
                                                             </td>
                                                             <td>
@@ -140,7 +140,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="6" align="right">
+                                                            <td colspan="5" align="right">
                                                                 <strong>Shipping</strong>
                                                             </td>
                                                             <td>
@@ -154,7 +154,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="6" align="right">
+                                                            <td colspan="5" align="right">
                                                                 <strong>Net Price</strong>
                                                             </td>
                                                             <td>
@@ -163,7 +163,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="6" align="right">
+                                                            <td colspan="5" align="right">
                                                                 <strong>Paid Amount</strong>
                                                             </td>
                                                             <td>
@@ -173,7 +173,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="6" align="right">
+                                                            <td colspan="5" align="right">
                                                                 <strong>Balance</strong>
                                                             </td>
                                                             <td>

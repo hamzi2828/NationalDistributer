@@ -162,7 +162,7 @@
         <th align="center">Quantity</th>
         <th align="center">Price</th>
         <th align="center">Tax</th>
-        <th align="center">Discount</th>
+        {{-- <th align="center">Discount</th> --}}
         <th align="center">Total</th>
     </tr>
     </thead>
@@ -212,11 +212,11 @@
                     <strong>{{ $product -> productTitle() }}</strong>
                     <br />
                     @php $barCode = new \Picqer\Barcode\BarcodeGeneratorHTML() @endphp
-                    {!! $barCode -> getBarcode($product -> barcode, $barCode::TYPE_CODE_128) !!}
+                    {{-- {!! $barCode -> getBarcode($product -> barcode, $barCode::TYPE_CODE_128) !!} --}}
                 </td>
                 <td align="center">{{ $saleInfo -> quantity }}</td>
                 <td align="center">{{ number_format (($saleInfo -> price/$saleInfo -> noOfRows), 2) }}</td>
-                <td align="center">0.00</td>
+                {{-- <td align="center">0.00</td> --}}
                 <td align="center">{{ number_format(($saleInfo -> net_price), 2) }}</td>
             </tr>
 
@@ -265,12 +265,12 @@
                         <strong>{{ $product -> productTitle() }}</strong>
                         <br />
                         @php $barCode = new \Picqer\Barcode\BarcodeGeneratorHTML() @endphp
-                        {!! $barCode -> getBarcode($product -> barcode, $barCode::TYPE_CODE_128, 2, 25) !!}
+                        {{-- {!! $barCode -> getBarcode($product -> barcode, $barCode::TYPE_CODE_128, 2, 25) !!} --}}
                     </td>
                     <td align="center">{{ $simple_sale -> quantity }}</td>
                     <td align="center">{{ number_format (($simple_sale -> avgSalePrice), 2) }}</td>
                     <td align="center">{{$simple_sale -> tax_value}}</td>
-                    <td align="center">{{ number_format($simple_sale -> discount_per_item, 2) }}</td>
+                    {{-- <td align="center">{{ number_format($simple_sale -> discount_per_item, 2) }}</td> --}}
                     <td align="center">{{ number_format(($simple_sale -> net_price), 2) }}</td>
                 </tr>
             @endforeach
@@ -280,14 +280,14 @@
                 <td align="center"><strong>{{ number_format ($quantity) }}</strong></td>
                 <td align="center"><strong></strong></td>
                 <td align="center"><strong>{{ number_format ($total_tax) }}</strong></td>
-                <td align="center"><strong>{{ number_format ($discount, 2) }}</strong></td>
+                {{-- <td align="center"><strong>{{ number_format ($discount, 2) }}</strong></td> --}}
                 <td colspan="2"></td>
             </tr>
         @endif
 
         <tr>
             <td></td>
-            <td colspan="{{ (request() -> filled ('picture') && request ('picture') == 'true') ? '6' : '5' }}"
+            <td colspan="{{ (request() -> filled ('picture') && request ('picture') == 'true') ? '5' : '4' }}"
                 class="grand total" align="right">G.Total
             </td>
             <td class="grand total" align="center">
@@ -296,7 +296,7 @@
         </tr>
         <tr>
             <td></td>
-            <td colspan="{{ (request() -> filled ('picture') && request ('picture') == 'true') ? '6' : '5' }}"
+            <td colspan="{{ (request() -> filled ('picture') && request ('picture') == 'true') ? '5' : '4' }}"
                 class="grand total" align="right">Shipping
             </td>
             <td class="grand total" align="center">
@@ -306,7 +306,7 @@
         @if($sale -> flat_discount > 0)
             <tr>
                 <td></td>
-                <td colspan="{{ (request() -> filled ('picture') && request ('picture') == 'true') ? '6' : '5' }}"
+                <td colspan="{{ (request() -> filled ('picture') && request ('picture') == 'true') ? '5' : '4' }}"
                     class="grand total" align="right">Flat Discount
                 </td>
                 <td class="grand total" align="center">
@@ -317,7 +317,7 @@
         @if($sale -> percentage_discount > 0)
             <tr>
                 <td></td>
-                <td colspan="{{ (request() -> filled ('picture') && request ('picture') == 'true') ? '6' : '5' }}"
+                <td colspan="{{ (request() -> filled ('picture') && request ('picture') == 'true') ? '5' : '4' }}"
                     class="grand total" align="right">Discount(%)
                 </td>
                 <td class="grand total" align="center">
@@ -327,7 +327,7 @@
         @endif
         <tr>
             <td></td>
-            <td colspan="{{ (request() -> filled ('picture') && request ('picture') == 'true') ? '6' : '5' }}"
+            <td colspan="{{ (request() -> filled ('picture') && request ('picture') == 'true') ? '5' : '4' }}"
                 class="grand total" align="right">Net
             </td>
             <td class="grand total" align="center">
@@ -336,7 +336,7 @@
         </tr>
         <tr>
             <td></td>
-            <td colspan="{{ (request() -> filled ('picture') && request ('picture') == 'true') ? '6' : '5' }}"
+            <td colspan="{{ (request() -> filled ('picture') && request ('picture') == 'true') ? '5' : '4' }}"
                 class="grand total" align="right">Paid
             </td>
             <td class="grand total" align="center">
@@ -345,7 +345,7 @@
         </tr>
         <tr>
             <td></td>
-            <td colspan="{{ (request() -> filled ('picture') && request ('picture') == 'true') ? '6' : '5' }}"
+            <td colspan="{{ (request() -> filled ('picture') && request ('picture') == 'true') ? '5' : '4' }}"
                 class="grand total" align="right">Balance
             </td>
             <td class="grand total" align="center">

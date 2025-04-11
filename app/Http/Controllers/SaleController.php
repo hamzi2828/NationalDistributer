@@ -169,7 +169,7 @@
                 DB ::beginTransaction ();
                 $this -> saleService -> edit_sale ( $request, $sale );
                 $this -> saleService -> delete_sold_products ( $sale -> id );
-                $this -> saleService -> sale_products ( $request, $sale );
+                $this -> saleService -> sale_products_v2 ( $request, $sale );
                 DB ::commit ();
 
                 return redirect () -> back () -> with ( 'message', 'Sale has been updated.' );
