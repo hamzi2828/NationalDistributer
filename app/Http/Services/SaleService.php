@@ -440,7 +440,7 @@
                 'tax_total'           => $Tax_Total,
                 'flat_discount'       => $request -> input ( 'flat-discount' ),
                 'percentage_discount' => $request -> input ( 'percentage-discount' ),
-                'net'                 => $net +   $Tax_Total ,
+                'net'                 => $net + ($Tax_Total > 0 ? $Tax_Total : 0),
                 'amount_added'        => $request -> input ( 'paid-amount' ),
                 'customer_type'       => $request -> input ( 'customer-type' ),
                 'boxes'               => $boxes,
