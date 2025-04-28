@@ -355,13 +355,16 @@
         {
             $products = $request->input('products');
             $totalTax = 0;
-
+            // dd($request->all());
             if (count($products) > 0) {
                 foreach ($products as $key => $product_id) {
                     $sale_qty = (int) $request->input("quantity.$key", 0);
                     $flat_discount = floatval($request->input("discount.$key", 0));
                     $unit_price = floatval($request->input("price.$key", 0)); // Get submitted price
-                    $taxRate = floatval($request->input("tax.$key", 0)); // Optional: get tax from request
+                    // Try to get tax from request, otherwise fallback to DB
+                    $taxRate = $request->has("tax.$key")
+                        ? floatval($request->input("tax.$key", 0))
+                        : (\App\Models\Product::find($product_id)?->tax?->rate ?? 0); // fallback to DB
 
                     if ($sale_qty <= 0) continue;
 
@@ -372,6 +375,8 @@
 
                     // Calculate tax only (based on discounted amount)
                     $product_tax = $discounted_price * ($taxRate / 100);
+
+                    // Print tax info for this product
 
                     $totalTax += round($product_tax, 2);
                 }
@@ -395,7 +400,7 @@
             $total = $this -> get_sale_total_v2 ( $request );
             $Tax_Total = $this -> get_sale_tax_total_v2 ( $request );
             $net   = 0;
-            // dd($Tax_Total, $total);
+          //  dd($Tax_Total, $total);
 
             if ( $request -> has ( 'percentage-discount' ) && $request -> filled ( 'percentage-discount' ) && $request -> input ( 'percentage-discount' ) > 0 ) {
                 $discount = $request -> input ( 'percentage-discount' );
