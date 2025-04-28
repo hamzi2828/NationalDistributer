@@ -212,7 +212,7 @@
         <tr>
             <td colspan="5" class="grand total" align="right">G.TOTAL</td>
             <td class="grand total" align="center">
-                <strong>{{ number_format ($sale -> total, 2) }}</strong>
+                <strong>{{ number_format((float)($sale->total - ($total_tax > 0 ? $total_tax : 0)), 2, '.', '') }}</strong>
             </td>
         </tr>
         @if($sale -> flat_discount > 0)
