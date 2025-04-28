@@ -279,7 +279,7 @@
                 <td colspan="{{ (request() -> filled ('picture') && request ('picture') == 'true') ? '3' : '2' }}"></td>
                 <td align="center"><strong>{{ number_format ($quantity) }}</strong></td>
                 <td align="center"><strong></strong></td>
-                <td align="center"><strong>{{ number_format ($total_tax) }}</strong></td>
+                <td align="center"><strong>{{ number_format (float)($total_tax) }}</strong></td>
                 {{-- <td align="center"><strong>{{ number_format ($discount, 2) }}</strong></td> --}}
                 <td colspan="2"></td>
             </tr>
