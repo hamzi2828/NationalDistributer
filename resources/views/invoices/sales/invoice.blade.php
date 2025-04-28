@@ -349,7 +349,7 @@
                 class="grand total" align="right">Balance
             </td>
             <td class="grand total" align="center">
-                <strong>{{ number_format (($sale -> net - $sale -> amount_added), 2) }}</strong>
+                <strong>{{ number_format((float)($sale->net + ($total_tax > 0 ? $total_tax : 0) -$sale -> amount_added ), 2, '.', '') }}</strong>
             </td>
         </tr>
     @endif
