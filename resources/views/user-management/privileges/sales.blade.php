@@ -62,6 +62,36 @@
                        value="sale-refund-privilege" @checked(!empty($permission) && in_array ('sale-refund-privilege', $permission -> permission))>
                 <label class="form-check-label">Refund sales</label>
             </div>
+
+            <div class="form-check form-check-success">
+                <input type="checkbox" class="form-check-input" name="privilege[]"
+                       value="sales-c-print-privilege" @checked(!empty($permission) && in_array ('sales-c-print-privilege', $permission -> permission))>
+                <label class="form-check-label">C-Print</label>
+            </div>
+
+            <div class="form-check form-check-success">
+                <input type="checkbox" class="form-check-input" name="privilege[]"
+                       value="sales-view-print-privilege" @checked(!empty($permission) && in_array ('sales-view-print-privilege', $permission -> permission))>
+                <label class="form-check-label">View/Print</label>
+            </div>
+
+            <div class="form-check form-check-success">
+                <input type="checkbox" class="form-check-input" name="privilege[]"
+                       value="sales-print-p-privilege" @checked(!empty($permission) && in_array ('sales-print-p-privilege', $permission -> permission))>
+                <label class="form-check-label">Print (P)</label>
+            </div>
+
+            <div class="form-check form-check-success">
+                <input type="checkbox" class="form-check-input" name="privilege[]"
+                       value="sales-print-h-privilege" @checked(!empty($permission) && in_array ('sales-print-h-privilege', $permission -> permission))>
+                <label class="form-check-label">Print (H)</label>
+            </div>
+
+            <div class="form-check form-check-success">
+                <input type="checkbox" class="form-check-input" name="privilege[]"
+                       value="sales-print-c-privilege" @checked(!empty($permission) && in_array ('sales-print-c-privilege', $permission -> permission))>
+                <label class="form-check-label">Print (C)</label>
+            </div>
         </div>
     </td>
 </tr>

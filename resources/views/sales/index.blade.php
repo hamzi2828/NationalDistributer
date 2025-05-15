@@ -18,6 +18,7 @@
                                         <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>Dated Added</th>
                                             <th>Actions</th>
                                             <th>Sale ID</th>
                                             <th>Order No</th>
@@ -39,6 +40,7 @@
                                             @foreach($sales as $sale)
                                                 <tr>
                                                     <td>{{ $loop -> iteration }}</td>
+                                                    <td>{{ $sale -> created_at }}</td>
                                                     <td>
                                                         <div>
                                                             @if($sale -> refunded == '1')
@@ -48,35 +50,46 @@
                                                                     Print
                                                                 </a>
                                                             @else
+                                                                @can('sales_c_print_privilege', \App\Models\Sale::class)
                                                                 <a class="btn btn-info btn-sm d-block mb-25 me-25"
                                                                    target="_blank"
                                                                    href="{{ route ('sales.c-invoice', ['sale' => $sale -> id]) }}">
                                                                     C-Print
                                                                 </a>
+                                                                @endcan
 
+                                                                @can('sales_view_print_privilege', \App\Models\Sale::class)
                                                                 <a class="btn btn-dark btn-sm d-block mb-25 me-25"
                                                                    target="_blank"
                                                                    href="{{ route ('sales.invoice', ['sale' => $sale -> id]) }}">
                                                                     View/Print
                                                                 </a>
+                                                                @endcan
 
+                                                                @can('sales_print_p_privilege', \App\Models\Sale::class)
                                                                 <a class="btn btn-primary btn-sm d-block mb-25 me-25"
                                                                    target="_blank"
                                                                    href="{{ route ('sales.invoice', ['sale' => $sale -> id, 'picture' => 'true']) }}">
                                                                     Print (P)
                                                                 </a>
+                                                                @endcan
 
+                                                                @can('sales_print_h_privilege', \App\Models\Sale::class)
                                                                 <a class="btn bg-bitbucket btn-sm d-block mb-25 me-25 text-white"
                                                                    target="_blank"
                                                                    href="{{ route ('sales.invoice-html', ['sale' => $sale -> id]) }}">
                                                                     Print (H)
                                                                 </a>
+                                                                @endcan
 
+
+                                                                @can('sales_c_print_privilege', \App\Models\Sale::class)
                                                                 <a class="btn bg-adn btn-sm d-block mb-25 me-25 text-white"
                                                                    target="_blank"
                                                                    href="{{ route ('sales.invoice-commerce', ['sale' => $sale -> id]) }}">
                                                                     Print (C)
                                                                 </a>
+                                                                @endcan
                                                             @endif
 
                                                             @if($sale -> sale_closed == '1' && $sale -> refunded == '0')
@@ -191,7 +204,7 @@
                                                     <td>{{ number_format ($sale -> net, 2) }}</td>
                                                     <td>{{ $sale -> remarks }}</td>
                                                     <td>{{ $sale -> closed_at }}</td>
-                                                    <td>{{ $sale -> created_at }}</td>
+
                                                 </tr>
                                             @endforeach
                                         @endif

@@ -26,6 +26,7 @@
             if ( count ( array_intersect ( config ( 'constants.system_access' ), auth () -> user () -> user_roles () ) ) < 1 )
                 $sales -> where ( [ 'user_id' => auth () -> user () -> id ] );
 
+                dd(request()->all());
             if ( request () -> filled ( 'start-date' ) && request () -> filled ( 'end-date' ) ) {
                 $start_date = date ( 'Y-m-d', strtotime ( request ( 'start-date' ) ) );
                 $end_date   = date ( 'Y-m-d', strtotime ( request ( 'end-date' ) ) );
